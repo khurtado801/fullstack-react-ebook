@@ -18,9 +18,9 @@ class ProductList extends React.Component {
   // Inside `ProductList`
   handleProductUpVote(productId) {
     const nextProducts = this.state.products.map((product) => {
-      if (product.id === productId) {
-        return Object.assign({}, product, {
-          votes: product.votes + 1,
+      if (product.id === productId) { // #If both products are equal
+        return Object.assign({}, product, { 
+          votes: product.votes + 1, // #Override the votes property on our new product object, increment vote count by 1
         });
       } else {
         return product;

@@ -4,11 +4,8 @@
  * React uses the return value from this method to determine what to render to the page
  */
 class ProductList extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
+    state = {
             products: [],
-        };
     };
 
     componentDidMount() {
@@ -18,7 +15,18 @@ class ProductList extends React.Component {
     }
 
     handleProductUpVote = (productId) => {
-        console.log(productId + ' was upvoted.');
+        const nextProducts = this.state.products.map((product) => {
+            if (product.id === productId) { // #If current product matches productId
+                return Object.assign({}, product, { // #Create new object using assign() method, copy products values from right arg to left arg
+                    votes: product.votes + 1, // #Override the votes property on our new product object, increment vote count by 1
+                });
+            } else {
+                return product;
+            };
+        });
+        this.setState({
+            products: nextProducts,
+        });
     }
 
     render() {
@@ -98,4 +106,4 @@ class Product extends React.Component {
 ReactDOM.render(
     <ProductList />,
     document.getElementById('content')
-  );
+);
