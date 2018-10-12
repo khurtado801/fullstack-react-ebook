@@ -4,15 +4,33 @@
  * React uses the return value from this method to determine what to render to the page
  */
 class TimerDashboard extends React.Component {
+    state = {
+        timers: [
+            {
+                title: 'Practice squat',
+                project: 'Gym Chores',
+                id: uuid.v4(),
+                elapsed: 5456099,
+                runningSince: Date.now(),
+            },
+            {
+                title: 'Bake squash',
+                project: 'Kitchen Chores',
+                id: uuid.v4(),
+                elapsed: 1273998,
+                runningSince: null,
+            }
+        ]
+    }
+
     render() {
-        console.log('TimerDashboard');
         return (
             <div className='ui three column centered grid'>
                 <div className='column'>
-                    <EditableTimerList />
-                    <ToggleableTimerForm
-                        isOpen={true}
+                    <EditableTimerList
+                        timers={this.state.timers}
                     />
+                    <ToggleableTimerForm />
                 </div>
             </div>
         );
@@ -21,34 +39,34 @@ class TimerDashboard extends React.Component {
 
 class EditableTimerList extends React.Component {
     render() {
-        console.log('EditableTimerList');
+        const timers = this.props.timers.map((timer) => {
+            <EditableTimer
+                key={timer.id}
+                id={timer.id}
+                title={timer.title}
+                project={timer.project}
+                elapsed={timer.elapsed}
+                runningSince={timer.runningSince}
+            />
+        });
         return (
             <div id='timers'>
-                <EditableTimer
-                    title='Learn React'
-                    project='Web Domination'
-                    elapsed='8986300'
-                    runningSince={null}
-                    editFormOpen={false}
-                />
-                <EditableTimer
-                    title='Learn Extreme Ironing'
-                    project='World Domination'
-                    elapsed='3890985'
-                    runningSince={null}
-                    editFormOpen={true}
-                />
+                {timers}
             </div>
         )
     }
 }
 
 class EditableTimer extends React.Component {
+    state = {
+        editFormOpen: false,
+    };
+
     render() {
-        console.log('EditableTimer');
-        if (this.props.editFormOpen) {
+        if (this.state.editFormOpen) { // #For a given number - stateful data
             return (
                 <TimerForm 
+                    id={this.props.id}
                     title={this.props.title}
                     project={this.props.project}
                 />
@@ -56,6 +74,7 @@ class EditableTimer extends React.Component {
         } else {
             return (
                 <Timer 
+                    id={this.props.id}
                     title={this.props.title}
                     project={this.props.project}
                     elapsed={this.props.elapsed}
@@ -66,6 +85,9 @@ class EditableTimer extends React.Component {
     }
 }
 
+/**
+ * #Forms are special state managers in their own right
+ */
 class TimerForm extends React.Component {
     render() {
         const submitText = this.props.title ? 'Update' : 'Create';
