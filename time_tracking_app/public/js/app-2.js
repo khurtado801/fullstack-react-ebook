@@ -2,6 +2,13 @@
   eslint-disable react/prefer-stateless-function, react/jsx-boolean-value,
   no-undef, jsx-a11y/label-has-for
 */
+
+/**
+ * React component using an ES6 class that extends the class React.Component
+ * Render is the only required method for a React component
+ * React uses the return value from this method to determine what to render to the page
+ */
+
 class TimersDashboard extends React.Component {
   state = {
     timers: [
@@ -198,6 +205,11 @@ class TimerForm extends React.Component {
   }
 }
 
+/**
+ * ReactDOM has two arguements passed in
+ * The first arguement is what we want to render
+ * The second arguement is where we want to render it
+ */
 ReactDOM.render(
   <TimersDashboard />,
   document.getElementById('content')
